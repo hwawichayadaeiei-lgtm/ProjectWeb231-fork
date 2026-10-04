@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import type { InfoProduct } from "../../types/type_infoProduct";
+import { useProductCatalog } from "@/context/ProductCatalogContext";
 
 type ProductCardProps = {
     product: InfoProduct;
@@ -11,16 +12,29 @@ type ProductCardProps = {
 export default function ProductCard({ product }: ProductCardProps) {
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
+    // เรียกฟังก์ชันซื้อสินค้าจาก Context
+    const { buyProduct } = useProductCatalog();
+
     useEffect(() => {
         if (!isDetailsOpen) return;
 
         function closeOnEscape(event: KeyboardEvent) {
-            if (event.key === "Escape") setIsDetailsOpen(false);
+            if (event.key === "Escape") {
+                setIsDetailsOpen(false);
+            }
         }
 
         window.addEventListener("keydown", closeOnEscape);
+
         return () => window.removeEventListener("keydown", closeOnEscape);
     }, [isDetailsOpen]);
+
+    // ฟังก์ชันเมื่อกดซื้อสินค้า
+    function handleBuyProduct() {
+        buyProduct(product);
+        alert(`ซื้อ ${product.Name} สำเร็จ`);
+        setIsDetailsOpen(false);
+    }
 
     return (
         <>
@@ -41,13 +55,24 @@ export default function ProductCard({ product }: ProductCardProps) {
                                 className="productImage"
                             />
                         ) : (
-                            <span className="imagePlaceholder">ไม่มีรูป</span>
+                            <span className="imagePlaceholder">
+                                ไม่มีรูป
+                            </span>
                         )}
                     </span>
+
                     <span className="productInfo">
-                        <span className="productPrice">฿{product.Price.toLocaleString("th-TH")}</span>
-                        <span className="productTitle">{product.Name}</span>
-                        <span className="productMeta">{product.Category}</span>
+                        <span className="productPrice">
+                            ฿{product.Price.toLocaleString("th-TH")}
+                        </span>
+
+                        <span className="productTitle">
+                            {product.Name}
+                        </span>
+
+                        <span className="productMeta">
+                            {product.Category}
+                        </span>
                     </span>
                 </button>
             </article>
@@ -56,7 +81,9 @@ export default function ProductCard({ product }: ProductCardProps) {
                 <div
                     className="productDialogBackdrop"
                     onMouseDown={(event) => {
-                        if (event.target === event.currentTarget) setIsDetailsOpen(false);
+                        if (event.target === event.currentTarget) {
+                            setIsDetailsOpen(false);
+                        }
                     }}
                 >
                     <section
@@ -66,7 +93,10 @@ export default function ProductCard({ product }: ProductCardProps) {
                         aria-labelledby="productDialogTitle"
                     >
                         <div className="productDialogHeader">
-                            <h2 id="productDialogTitle">รายละเอียดสินค้า</h2>
+                            <h2 id="productDialogTitle">
+                                รายละเอียดสินค้า
+                            </h2>
+
                             <button
                                 className="productDialogClose"
                                 type="button"
@@ -76,20 +106,50 @@ export default function ProductCard({ product }: ProductCardProps) {
                                 ×
                             </button>
                         </div>
+
                         {product.image ? (
                             <div className="productDialogMedia">
-                                <Image src={product.image} alt={product.Name} fill sizes="(max-width: 640px) 90vw, 32rem" />
+                                <Image
+                                    src={product.image}
+                                    alt={product.Name}
+                                    fill
+                                    sizes="(max-width: 640px) 90vw, 32rem"
+                                />
                             </div>
                         ) : (
-                            <div className="productDialogMedia productDialogPlaceholder">ไม่มีรูป</div>
+                            <div className="productDialogMedia productDialogPlaceholder">
+                                ไม่มีรูป
+                            </div>
                         )}
-                        <h3 className="productDialogName">{product.Name}</h3>
-                        <p className="productDialogPrice">฿{product.Price.toLocaleString("th-TH")}</p>
-                        <p className="productDialogCategory">{product.Category}</p>
-                        <p className="productDialogDescription">{product.Description}</p>
+
+                        <h3 className="productDialogName">
+                            {product.Name}
+                        </h3>
+
+                        <p className="productDialogPrice">
+                            ฿{product.Price.toLocaleString("th-TH")}
+                        </p>
+
+                        <p className="productDialogCategory">
+                            {product.Category}
+                        </p>
+
+                        <p className="productDialogDescription">
+                            {product.Description}
+                        </p>
+
+                        {/* ปุ่มซื้อสินค้า */}
+                        <button
+                            className="buyProductButton"
+                            type="button"
+                            onClick={handleBuyProduct}
+                        >
+                            ซื้อสินค้า
+                        </button>
                     </section>
                 </div>
             )}
         </>
     );
 }
+

@@ -708,3 +708,95 @@ body:has(.loginPage) .siteHeader {
     margin-bottom: 2rem;
   }
 }
+/* =========================
+   Purchase History
+   ========================= */
+
+.purchaseHistoryPage {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+
+.purchaseHistoryPage h1 {
+    margin-bottom: 24px;
+    font-size: 32px;
+}
+
+.purchaseHistoryList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.purchaseHistoryCard {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 18px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.purchaseHistoryImage {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.purchaseHistoryImage img {
+    object-fit: cover;
+}
+
+.purchaseHistoryInfo {
+    flex: 1;
+}
+
+.purchaseHistoryInfo h2 {
+    margin: 0 0 10px;
+    font-size: 22px;
+}
+
+.purchaseHistoryInfo p {
+    margin: 6px 0;
+    color: #555;
+}
+
+.purchaseHistoryInfo strong {
+    color: #222;
+}
+
+/* หน้าจอมือถือ */
+@media (max-width: 640px) {
+    .purchaseHistoryPage {
+        padding: 24px 16px;
+    }
+
+    .purchaseHistoryPage h1 {
+        font-size: 26px;
+    }
+
+    .purchaseHistoryCard {
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .purchaseHistoryImage {
+        width: 100px;
+        height: 100px;
+    }
+
+    .purchaseHistoryInfo h2 {
+        font-size: 18px;
+    }
+}
+
